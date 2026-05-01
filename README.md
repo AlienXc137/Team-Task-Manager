@@ -2,6 +2,8 @@
 
 TaskManager Pro is a robust, full-stack MERN (MongoDB, Express, React, Node.js) application designed for seamless team collaboration. It features role-based access control, real-time task management via a Kanban-style interface, and interactive project dashboards.
 
+Deployed at railway: https://team-task-manager-production-4904.up.railway.app
+
 ---
 
 ## ✨ Key Features
