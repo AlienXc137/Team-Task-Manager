@@ -6,10 +6,10 @@ import { Plus, Edit2, Users } from "lucide-react";
 
 export default function Projects() {
     const [projects, setProjects] = useState([]);
-    const [users, setUsers] = useState([]); // State to hold all users
+    const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
-    const [form, setForm] = useState({ name: '', description: '', members: [] }); // members array
+    const [form, setForm] = useState({ name: '', description: '', members: [] });
 
     let user = null;
     try {
@@ -21,7 +21,7 @@ export default function Projects() {
         try {
             const [projRes, userRes] = await Promise.all([
                 API.get("/projects"),
-                API.get("/users") // Fetch users for the assignment checklist
+                API.get("/users")
             ]);
             setProjects(projRes.data);
             setUsers(userRes.data);
@@ -46,12 +46,12 @@ export default function Projects() {
         setForm({
             name: project.name,
             description: project.description,
-            members: project.members?.map(u => u._id) || [] // Extract user IDs for checkboxes
+            // Safely extract the ID whether it was populated or not
+            members: project.members?.map(u => u._id || u) || []
         });
         setShowModal(true);
     };
 
-    // Helper to handle checkbox toggles
     const handleMemberChange = (userId) => {
         setForm((prev) => {
             const isMember = prev.members.includes(userId);
@@ -72,7 +72,7 @@ export default function Projects() {
                 await API.post("/projects", form);
             }
             setShowModal(false);
-            fetchData();
+            fetchData(); // Refresh the list
         } catch (err) {
             alert(err.response?.data?.message || "Failed to save project");
         }
@@ -131,7 +131,6 @@ export default function Projects() {
                     )}
                 </div>
 
-                {/* Shared Create/Edit Modal */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                         <div className="bg-indigo-900/90 p-6 rounded-xl w-full max-w-md shadow-2xl border border-white/20">
