@@ -23,8 +23,11 @@ const startServer = async () => {
     try {
         await connectDB();
 
-        app.listen(process.env.PORT || 5000, () => {
-            console.log("Server running on 5000");
+        //Capture the dynamic port and bind to '0.0.0.0' for Railway
+        const PORT = process.env.PORT || 5000;
+        
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server running on port ${PORT}`);
         });
 
     } catch (err) {
